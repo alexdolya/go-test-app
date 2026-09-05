@@ -1,0 +1,23 @@
+services:
+  go-test-app-postgres:
+    image: postgres:18.1-bookworm
+    container_name: go-test-app-postgres
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=go_db
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+  go-test-migrations:
+    image: migrate/migrate:v4.19.1
+    volumes:
+      - C:\Users\Alex\Documents\golang\go-test-app\migrations:/migrations
+
+# docker compose run --rm go-test-migrations create -ext sql -dir /migrations -seq init
+# docker compose run --rm go-test-migrations -path /migrations -database postgres://user:password@go-test-app-postgres:5432/go_db?sslmode=disable up
+
+volumes:
+  postgres_data:
